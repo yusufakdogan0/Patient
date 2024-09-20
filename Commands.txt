@@ -1,0 +1,67 @@
+It is possible to use get operations in the chrome
+
+
+To see all Laborants:
+curl -X GET http://localhost:8080/Laborants
+
+To add a laborant:
+curl -X POST http://localhost:8080/Laborants ^
+-H "Content-Type: application/json" ^
+-d "{\"firstName\":\"Mario\", \"lastName\":\"Cart\", \"laborantId\":\"98765\"}"
+
+To delete a laborant:
+curl -X DELETE http://localhost:8080/Laborants/delete/52
+
+--------------------------------------------------------------------------------------------------
+
+To see all reports:
+curl -X GET http://localhost:8080/Reports
+
+To see a particular report:
+curl -X GET http://localhost:8080/Reports/302
+
+To delete a report:
+curl -X DELETE http://localhost:8080/Reports/delete/102
+
+To add a report:
+curl -X POST http://localhost:8080/Reports ^
+-H "Content-Type: multipart/form-data" ^
+-F "patientFirstName=Ahmet" ^
+-F "patientLastName=Akdogan" ^
+-F "patientId=12234" ^
+-F "date=30-08-2021" ^
+-F "diagnosisHeader=Flu" ^
+-F "diagnosis=Seasonal flu" ^
+-F "laborantId=1" ^
+-F "image=@C:/Users/DELL/Desktop/Java/User/Images/1.jpg"
+
+To update a report:
+curl -X PUT http://localhost:8080/Reports/update/103 ^
+-H "Content-Type: multipart/form-data" ^
+-F "patientFirstName=Jack" ^
+-F "patientLastName=Sparrow" ^
+-F "patientId=12345" ^
+-F "date=01-09-2024" ^
+-F "diagnosisHeader=Updated Diagnosis Header" ^
+-F "diagnosis=Updated Diagnosis" ^
+-F "laborantId=1" ^
+-F "image=@C:/Users/DELL/Desktop/Java/User/Images/1.jpg"
+
+---------------------------------------------------------------------------
+To see reports sorted:
+curl -X GET http://localhost:8080/Reports/sorted
+
+To see reports reverse sorted:
+curl -X GET http://localhost:8080/Reports/reverseSorted
+
+retriving images:
+curl -X GET http://localhost:8080/Reports/Image/52 --output image.jpg
+
+mysql code:
+mysql -u root -p
+password
+ALTER TABLE abc.report MODIFY COLUMN image LONGBLOB;
+
+
+
+
