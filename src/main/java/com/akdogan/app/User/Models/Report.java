@@ -24,6 +24,7 @@ public class Report {
     public String diagnosisHeader;
     @Column
     public String diagnosis;
+    // A laborant can have multiple reports
     @ManyToOne
     @JoinColumn(name = "laborantId", nullable = false)
     public Laborant laborant;

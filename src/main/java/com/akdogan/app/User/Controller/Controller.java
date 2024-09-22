@@ -1,3 +1,6 @@
+// Controller for the code. Due to simplicity of actual code I decided to not write a service layer.
+// Therefore, this is actually Service + Controller
+
 package com.akdogan.app.User.Controller;
 
 import com.akdogan.app.User.Exception.ResourceNotFoundException;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -28,27 +30,33 @@ public class Controller {
 
 
     // CRUD FOR LABORANTS
+    // Getting a list of laborants
     @GetMapping(value = "/Laborants")
     public List<Laborant> getUsers(){
         return laborantRepo.findAll();
     }
+    // Adding a new laborant
     @PostMapping(value = "/Laborants")
     public Laborant addLaborant(@RequestBody Laborant laborant) {
         return laborantRepo.save(laborant);
     }
+    // Deleting an existing laborant
     @DeleteMapping(value = "/Laborants/delete/{id}")
     public String deleteLaborant(@PathVariable Long id){
-        Laborant laborant = laborantRepo.findById(id).get();
+        Laborant laborant = laborantRepo.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Report not found with id: " + id));;
         laborantRepo.delete(laborant);
         return "deleted....";
     }
 
 
     // CRUD FOR REPORTS
+    // Get the list of all reports sorted by id
     @GetMapping(value = "/Reports")
     public List<Report> getReports(){
         return reportRepo.findAll();
     }
+    // Adding a new report
     @PostMapping(value = "Reports")
     public ResponseEntity<String> addReport(
             @RequestParam("patientFirstName") String patientFirstName,
@@ -77,12 +85,15 @@ public class Controller {
 
         return ResponseEntity.ok("Report created successfully");
     }
+    // Delete an existing report
     @DeleteMapping(value = "/Reports/delete/{id}")
     public String deleteReport(@PathVariable Long id){
-        Report report = reportRepo.findById(id).get();
+        Report report = reportRepo.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Report not found with id: " + id));;
         reportRepo.delete(report);
         return "deleted....";
     }
+    // Update an existing report
     @PutMapping("/Reports/update/{id}")
     public ResponseEntity<String> updateReport(
             @PathVariable Long id,
@@ -124,7 +135,7 @@ public class Controller {
 
 
 
-    // SORTING REPORTS
+    // SORTING REPORTS BASED ON DATE
     @GetMapping(value = "/Reports/sorted")
     public List<Report> getSortedReports() {
         return reportRepo.findAll(Sort.by(Sort.Direction.ASC, "date"));
@@ -152,6 +163,7 @@ public class Controller {
         headers.setContentType(MediaType.IMAGE_JPEG); // Adjust the content type if using a different image format
         return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
+    // Check an existing report
     @GetMapping("/Reports/{id}")
     public Report getReport(@PathVariable Long id) {
         Report report = reportRepo.findById(id)
