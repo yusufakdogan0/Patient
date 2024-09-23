@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 public class Report {
     @Id
-    @GeneratedValue
     public Long id;
     @Column
     public String patientFirstName;
@@ -56,6 +55,7 @@ public class Report {
 
     public Laborant getLaborant() { return laborant; }
     public void setLaborant(Laborant laborant) { this.laborant = laborant; }
+    public void setId(Long id){this.id = id;}
 
 
 }

@@ -73,6 +73,7 @@ public class Controller {
 
         // Create and save the Report
         Report report = new Report();
+        report.setId(generateUniqueId()); // Set a unique ID
         report.setPatientFirstName(patientFirstName);
         report.setPatientLastName(patientLastName);
         report.setPatientId(patientId);
@@ -171,6 +172,14 @@ public class Controller {
         return report;
     }
 
+    // Method to generate a unique ID between 10000 and 99999
+    private Long generateUniqueId() {
+        Long id;
+        do {
+            id = (long) (10000 + Math.random() * (99999 - 10000));
+        } while (reportRepo.existsById(id)); // Keep generating until a unique ID is found
+        return id;
+    }
 
 
 
